@@ -1,5 +1,4 @@
-
-from flask import Flask
+from flask import Flask, request, escape
 from wsgiref.simple_server import make_server
 
 app = Flask(__name__)
@@ -7,7 +6,8 @@ app = Flask(__name__)
 
 @app.route('/api/v1/hello-world-27')
 def hello():
-    return 'Hello World 27'
+    name = request.args.get("name", "World 27")
+    return f'Hello {escape(name)}'
 
 
 server = make_server('', 8000, app)
