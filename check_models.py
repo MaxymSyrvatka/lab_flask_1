@@ -10,7 +10,7 @@ student7 = Student(id=5, name='Alin', surname='Dziamb', email='jgf',age ='8')
 student8 = Student(id=55, name='Alin', surname='Dziamb', email='jgf',age ='8')
 course = Course(id=15, name='Al', tutor=tutor1, students = [student6, student7])
 course1 = Course(id=40, name='Al', tutor=tutor1, students = [student6, student7])
-request = Request(id =550 , status = RequestStatus.placed, student = student6, course=course)
+request = Request(id =0 , status = RequestStatus.placed, student = student6, course=course)
 
 ##session.add(student)
 session.add(tutor1)
