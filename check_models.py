@@ -4,7 +4,7 @@ from models import *
 
 session = Session()
 ##student = Student(id=1, name='Alina', surname='Dziamba', email='jhgf',age ='18')
-tutor1 = Tutor(id=1, name='A', surname='D', email='j',age ='28')
+tutor1 = Tutor(id=3, name='A', surname='D', email='j',age ='28')
 student6 = Student(id=6, name='Alin', surname='Dziamb', email='jgf',age ='8')
 student7 = Student(id=15, name='Alin', surname='Dziamb', email='jgf',age ='8')
 student8 = Student(id=55, name='Alin', surname='Dziamb', email='jgf',age ='8')
