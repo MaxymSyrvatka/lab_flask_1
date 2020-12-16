@@ -1,0 +1,433 @@
+openapi: 3.0.1
+info:
+  title: Online Learning API
+  description: "Online Learning API"
+  version: 1.0.0
+servers:
+- url: https://example.com/v1
+
+tags:
+- name: tutor
+  description: Operations about tutors
+- name: student
+  description: Operations about student
+
+paths:
+  /tutor/{id}/add:
+    post:
+      tags:
+      - tutor
+      summary: Add the new course
+      operationId: addCourse
+      requestBody:
+        description: Course object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      parameters:
+      - name: id
+        in: path
+        description: ID of tutor
+        schema:
+          type: integer
+          format: int64
+        required: true
+      responses:
+        200:
+          description: successful oparation
+        405:
+          description: Invalid ID
+      security:
+        - petstore_auth: []
+          
+  /tutor/{id}/update:
+    put:
+      tags:
+      - tutor
+      summary: Update this course
+      operationId: updateCourse
+      requestBody:
+        required: true
+        description: Course object that needs to be updated
+        content:
+          application/json:
+            schema:
+              title: Course
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                  description: Name of the course
+                tutor:
+                  type: string
+                  description: Author of the course
+                students:
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+      parameters: 
+      - name: id
+        in: path
+        description: ID of tutor
+        required: true
+        schema:
+          type: integer
+          format: int64
+
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        400:
+          description: Invalid ID
+        404:
+          description: Not found
+      security:
+        - petstore_auth: []
+
+  /tutor/{id}/delete/{course_id}:
+    delete:
+      tags:
+      - tutor
+      summary: Delete the course
+      operationId: deleteCourse
+      parameters:
+      - name: id
+        in: path
+        description: ID of tutor
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: course_id
+        in: path
+        description: ID of course
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful deletion of the current course
+        400:
+          description: Invalid ID
+        404:
+          description: Course not found
+      security:
+        - petstore_auth: []
+          
+  /tutor/{id}/courses:
+    get:
+      tags:
+      - tutor
+      summary: Return all the courses
+      operationId: getCourses
+      parameters:
+      - name: id
+        in: path
+        description: ID of tutor
+        required: true
+        schema:
+          type: integer
+          format: int64
+        
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        400:
+          description: Invalid ID
+        404:
+          description: Course not found
+      security:
+        - petstore_auth: []
+
+  # /tutor/{id}/{course_id}:
+  #   get:
+  #     tags:
+  #     - tutor
+  #     summary: Return the course by id
+  #     operationId: getCourse
+  #     parameters:
+  #     - name: id
+  #       in: path
+  #       description: ID of tutor
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64
+  #     - name: course_id
+  #       in: path
+  #       description: ID of course
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64
+        
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Course'
+  #       400:
+  #         description: Invalid ID
+  #       404:
+  #         description: Course not found
+  #     security:
+  #       - petstore_auth: []
+                    
+  /tutor/{id}/add_to_course:
+    put:
+      tags:
+      - tutor
+      summary: Add student to a course
+      operationId: addStudent
+          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+              
+      parameters:
+        - name: id
+          in: path
+          description: Teacher id for a certain teacher
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: Invalid ID supplied
+        405:
+          description: Invalid input
+      security:
+        - petstore_auth: []
+          
+  /tutor/{id}:
+    get:
+      tags:
+      - tutor
+      summary: Return the tutor by id
+      operationId: getTutor
+      parameters:
+      - name: id
+        in: path
+        description: ID of tutor
+        required: true
+        schema:
+          type: integer
+          format: int64
+        
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tutor'
+        400:
+          description: Invalid ID
+        404:
+          description: Tutor not found
+
+  /student/{student_id}/my_courses:
+    get:
+      tags:
+        - student
+      summary: Return the courses for the student
+      operationId: showCourse
+      security:
+        - petstore_auth: []
+      parameters:
+      - name: student_id
+        in: path
+        description: Student ID
+        required: true
+        schema:
+          type: integer
+          format: int64      
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Course not found
+
+
+  /student/{student_id}/request/{course_id}:
+    post:
+      tags:
+        - student
+      summary: Request an access for the student
+      operationId: requestCourse
+      parameters:
+      - name: student_id
+        in: path
+        description: Student ID
+        required: true
+        schema:
+          type: integer
+          format: int64 
+      - name: course_id
+        in: path
+        description: Course ID
+        required: true
+        schema:
+          type: integer
+          format: int64 
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        400:
+          description: Invalid ID supplied
+      security:
+        - petstore_auth: []
+                
+components:
+  schemas:
+    Student:
+      required:
+        - id
+        - name
+        - surname
+        - email
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+          format: int32
+        available_courses:
+          type: array
+          items:
+            properties:
+              courseName:
+                type: string
+
+    Tutor:
+      required:
+        - id
+        - name
+        - surname
+        - email
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+          format: int32
+        courses:
+          type: array
+          items:
+            properties:
+              course_id:
+                type: integer
+                format: int64
+
+    Course:
+      type: object
+      required:
+        - id
+        - name
+        - tutor
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tutor:
+          type: string
+        students:
+          maxItems: 5
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+                format: int64
+
+    Request:
+      type: object
+      required:
+        - student_id
+        - course_id
+        - status
+      properties:
+        student_id:
+          type: integer
+          format: int64
+        course_id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - sent
+            - approve
+            - disapprove
+
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+          scopes:
+            'write:classes': modify pets in your account
+            'read:classes': read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
