@@ -3,16 +3,19 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 import enum
-engine = create_engine("postgresql://postgres:123456@localhost:5433/postgres")
+
+engine = create_engine("postgresql+psycopg2://postgres:1q2w3e4r5t@localhost:5432/postgres")
 
 SessionFactory = sessionmaker(bind=engine)
 Session = scoped_session(SessionFactory)
 Base = declarative_base()
 
+
 class RequestStatus(enum.Enum):
     placed = "sent"
-    approved = "approve"
-    delivered = "disapprove"
+    approved = "approved"
+    delivered = "disapproved"
+
 
 class Student(Base):
     __tablename__ = "student"
@@ -20,7 +23,8 @@ class Student(Base):
     name = Column(String)
     surname = Column(String)
     email = Column(String)
-    age = Column(Integer)
+    password = Column(String)
+    age = Column(String)
 
 
 students_in_course = Table("students_in_course",
@@ -35,15 +39,18 @@ class Tutor(Base):
     name = Column(String)
     surname = Column(String)
     email = Column(String)
-    age = Column(Integer)
+    password = Column(String)
+    age = Column(String)
 
 
 class Course(Base):
     __tablename__ = "course"
     id = Column(Integer, primary_key=True)
+    student_number = Column(Integer)
     name = Column(String)
     tutor_id = Column(Integer, ForeignKey(Tutor.id))
-    tutor = relationship(Tutor, backref="course", lazy=False)
+    #tutor = relationship(Tutor, backref="course", lazy=False)
+
     students = relationship(Student, secondary=students_in_course, lazy="subquery",
                             backref=backref("course", lazy=True))
 
@@ -52,8 +59,8 @@ class Request(Base):
     id = Column(Integer, primary_key=True)
     status = Column(Enum(RequestStatus))
     student_id = Column(Integer, ForeignKey(Student.id))
-    student = relationship(Student, backref="request", lazy=False)
+    #student = relationship(Student, backref="request", lazy=False)
     course_id = Column(Integer, ForeignKey(Course.id))
-    course = relationship(Course, backref="request", lazy=False)
+    #course = relationship(Course, backref="request", lazy=False)
 
 Base.metadata.create_all(engine)
