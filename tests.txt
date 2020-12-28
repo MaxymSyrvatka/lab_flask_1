@@ -48,8 +48,8 @@ STUDENT POST http://127.0.0.1:5001/student {"id" : 4, "name": "Test Student 4", 
 STUDENT GET http://127.0.0.1:5001/student/4 (http://127.0.0.1:5001/student/1)
 STUDENT DELETE http://127.0.0.1:5001/student/4 (http://127.0.0.1:5001/student/1)
 
-COURSE POST http://127.0.0.1:5001/tutor/5/add {"id" : 1, "name": "Math"}
-COURSE PUT http://127.0.0.1:5001/tutor/5/update {"id" : 1, "name": "Music"}
+COURSE POST http://127.0.0.1:5001/tutor/5/add {"id" : 4, "name": "English"}
+COURSE PUT http://127.0.0.1:5001/tutor/5/update {"id" : 4, "name": "German"}
 COURSE DELETE http://127.0.0.1:5001/tutor/5/delete/1
 
 SHOW_STUDENT_COURSES GET http://127.0.0.1:5001/student/4/my_courses

@@ -229,6 +229,7 @@ def create_course(tutor_id):
         "students": [],
     }
 
+
     try:
         course = course_schema.load(parsed)
     except ValidationError as err:
@@ -254,13 +255,12 @@ def update_course(tutor_id):
 
     if auth.current_user() != tutor.email:
         return 'You don`t have a permission to update this course!', 401
-    # if tutor_id
 
     course_data = request.json
     course_schema = CourseSchema()
     course = session.query(Course).filter(Course.id == course_data['id']).one_or_none()
 
-    if course.tutor_id != tutor_id:
+    if int(course.tutor_id) != int(tutor_id):
         return 'You don`t have a permission to update this course!', 401
 
     if course is None:
@@ -387,4 +387,4 @@ def disapprove_request(tutor_id, request_id):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port='5003')
