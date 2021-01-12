@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load, validate
-from models import Student, Tutor, Course, RequestStatus, Request
+from lab_flask_1.models import Student, Tutor, Course, RequestStatus, Request
 
 
 class StudentSchema(Schema):

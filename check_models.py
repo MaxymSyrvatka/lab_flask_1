@@ -1,4 +1,4 @@
-from models import *
+from lab_flask_1.models import *
 
 # psql -h localhost -d postgres -U postgres -p 5433 -a -q -f create_table.sql
 

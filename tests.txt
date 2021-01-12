@@ -17,10 +17,6 @@ PUT RequestStatus
 curl -X PUT -v -H "Content-Type: application/json" -d '{"status" : "delivered"}' http://localhost:5000/tutor/7/request/5
 
 
-
-
-
-
 COURSE CREATION
 curl -X POST -v -H "Content-Type: application/json" -d '{"id" : "99", "name": "French"}' http://localhost:5000/tutor/1/add
 
