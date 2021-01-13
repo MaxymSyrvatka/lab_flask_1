@@ -3,7 +3,6 @@ CREATE TABLE student(
   name VARCHAR,
   surname VARCHAR,
   email VARCHAR,
-  password VARCHAR,
   age INTEGER,
   PRIMARY KEY (id)
 );
@@ -12,7 +11,6 @@ CREATE TABLE tutor(
   name VARCHAR,
   surname VARCHAR,
   email VARCHAR,
-  password VARCHAR,
   age INTEGER,
   PRIMARY KEY (id)
 );
@@ -20,7 +18,6 @@ CREATE TABLE course(
   id INTEGER,
   name VARCHAR,
   tutor_id INTEGER,
-  student_number INTEGER,
 --  students VARCHAR,
   PRIMARY KEY (id),
   FOREIGN KEY (tutor_id) REFERENCES tutor(id)
