@@ -3,8 +3,8 @@ from flask_bcrypt import Bcrypt, check_password_hash
 from flask_httpauth import HTTPBasicAuth
 from integer import Integer
 from marshmallow import ValidationError, INCLUDE
-from models import Session, Tutor, Student, Course, students_in_course, Request, RequestStatus
-from schemas import TutorSchema, CourseSchema, StudentSchema, RequestSchema
+from lab_flask_1.models import Session, Tutor, Student, Course, students_in_course, Request, RequestStatus
+from lab_flask_1.schemas import TutorSchema, CourseSchema, StudentSchema, RequestSchema
 
 
 app = Flask(__name__)
@@ -48,10 +48,6 @@ def authenticate(username, password):
 def show_tutor(tutor_id):
     schema = TutorSchema()
     tutor = session.query(Tutor).filter(Tutor.id == tutor_id).one_or_none()
-    try:
-        schema.dump(tutor)
-    except ValidationError as err:
-        return 'invalid id', 400
 
     if tutor is None:
         return 'The tutor doesn`t exist', 404
@@ -68,10 +64,6 @@ def show_tutor(tutor_id):
 def show_student(student_id):
     schema = StudentSchema()
     student = session.query(Student).filter(Student.id == student_id).one_or_none()
-    try:
-        schema.dump(student)
-    except ValidationError as err:
-        return 'Invalid id', 400
 
     if student is None:
         return 'The student doesn`t exist', 404
@@ -259,12 +251,11 @@ def update_course(tutor_id):
     course_data = request.json
     course_schema = CourseSchema()
     course = session.query(Course).filter(Course.id == course_data['id']).one_or_none()
+    if course is None:
+        return 'The course doesn`t exist', 404
 
     if int(course.tutor_id) != int(tutor_id):
         return 'You don`t have a permission to update this course!', 401
-
-    if course is None:
-        return 'The course doesn`t exist', 404
 
     parsed = {
         'id': course_data['id'],
@@ -288,19 +279,15 @@ def delete_course(tutor_id, course_id):
     tutor_schema = TutorSchema()
     tutor = session.query(Tutor).filter(Tutor.id == tutor_id).one_or_none()
 
-    try:
-        tutor_schema.dump(tutor)
-    except ValidationError as err:
-        return 'invalid id', 400
     if tutor is None:
         return 'The tutor doesn`t exist', 404
+    course = session.query(Course).filter(Course.id == course_id).one_or_none()
+    if course is None:
+        return 'The course doesn`t exist', 400
 
     if auth.current_user() != tutor.email:
         return 'You don`t have a permission to delete this course!', 401
 
-    course = session.query(Course).filter(Course.id == course_id).one_or_none()
-    if course is None:
-        return 'The course doesn`t exist', 400
 
     if int(course.tutor_id) != int(tutor_id):
         return 'You don`t have a permission to delete this course!', 401
@@ -318,12 +305,13 @@ def create_request(student_id, course_id):
     if student is None:
         return 'The student doesn`t exist', 400
 
-    if auth.current_user() != student.email:
-        return 'You don`t have a permission to create request!', 401
-
     course = session.query(Course).filter(Course.id == course_id).one_or_none()
     if course is None:
         return 'The course doesn`t exist', 400
+
+    if auth.current_user() != student.email:
+        return 'You don`t have a permission to create request!', 401
+
 
     if course.student_number > 5:
         return 'You can not join this course', 500
@@ -359,12 +347,14 @@ def disapprove_request(tutor_id, request_id):
     if tutor is None:
         return 'The tutor doesn`t exist', 400
 
-    if auth.current_user() != tutor.email:
-        return 'You don`t have a permission to approve(disapprove) the request!', 401
-
     students_request = session.query(Request).filter(Request.id == request_id).one_or_none()
     if students_request is None:
         return 'The request doesn`t exist', 400
+
+    if auth.current_user() != tutor.email:
+        return 'You don`t have a permission to approve(disapprove) the request!', 401
+
+
 
     parsed_status = request.json
 
