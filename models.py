@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 import enum
 
-engine = create_engine("postgresql+psycopg2://victoriapp:victoriapp@localhost/dbpp")
+engine = create_engine("postgresql+psycopg2://postgres:1q2w3e4r5t@localhost:5432/postgres")
 
 SessionFactory = sessionmaker(bind=engine)
 Session = scoped_session(SessionFactory)

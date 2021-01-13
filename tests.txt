@@ -1,0 +1,63 @@
+TUTOR CREATION
+curl -X POST -v -H "Content-Type: application/json" -d '{"id" : "1", "name": "K", "surname" : "P" , "email" : "qwert@gmail.com", "password" : "qwe123", "age" : "30"}' http://localhost:5000/tutor
+
+
+STUDENT CREATION
+curl -X POST -v -H "Content-Type: application/json" -d '{"id" : "8", "name": "K", "surname" : " ghkdf" , "email" : "qwert@yugmail.com", "password" : "lsdchbvjbv", "age" : "17"}' http://localhost:5000/student
+
+
+COURSE CREATION
+curl -X POST -v -H "Content-Type: application/json" -d '{"id" : "99", "name": "Math"}' http://localhost:5000/tutor/1/add
+
+
+PUT Course
+curl -X PUT -v -H "Content-Type: application/json" -d '{"id" : "40", "name": "Music", "tutor_id": "1"}' http://localhost:5000/tutor/1/update
+
+PUT RequestStatus
+curl -X PUT -v -H "Content-Type: application/json" -d '{"status" : "delivered"}' http://localhost:5000/tutor/7/request/5
+
+
+
+
+
+
+COURSE CREATION
+curl -X POST -v -H "Content-Type: application/json" -d '{"id" : "99", "name": "French"}' http://localhost:5000/tutor/1/add
+
+STUDENT CREATION
+curl -X POST -v -H "Content-Type: application/json" -d '{"id" : "8", "name": "K", "surname" : " ghkdf" , "email" : "qwert@yugmail.com", "password" : "lsdchbvjbv", "age" : "17"}' http://localhost:5000/student
+
+POST REQUEST
+curl -X POST http://localhost:5000/student/8/request/99
+
+PUT REQUEST
+curl -X PUT -v -H "Content-Type: application/json" -d '{"status" : "approved"}' http://localhost:5000/tutor/1/request/899
+
+GET STUDENTS_COURSES
+curl -X GET http://localhost:8000/student/8/my_courses
+
+
+psql -h localhost -d postgres -U postgres -p 5432 -a -q -f create_table.sql
+
+
+TUTOR POST http://127.0.0.1:5001/tutor {"id" : 5, "name": "Test Tutor 5", "surname" : "Test Tutor Surname 5" , "email" : "email_tutor_5@gmail.com", "password" : "qwert12345", "age" : "30"}
+TUTOR GET http://127.0.0.1:5001/tutor/5 (http://127.0.0.1:5001/tutor/1)
+TUTOR DELETE http://127.0.0.1:5001/tutor/5 (http://127.0.0.1:5001/tutor/1)
+
+STUDENT POST http://127.0.0.1:5001/student {"id" : 4, "name": "Test Student 4", "surname" : "Test Student Surname 4" , "email" : "email_student_4@gmail.com", "password" : "qwert12345", "age" : "19"}
+STUDENT GET http://127.0.0.1:5001/student/4 (http://127.0.0.1:5001/student/1)
+STUDENT DELETE http://127.0.0.1:5001/student/4 (http://127.0.0.1:5001/student/1)
+
+COURSE POST http://127.0.0.1:5001/tutor/5/add {"id" : 4, "name": "English"}
+COURSE PUT http://127.0.0.1:5001/tutor/5/update {"id" : 4, "name": "German"}
+COURSE DELETE http://127.0.0.1:5001/tutor/5/delete/1
+
+SHOW_STUDENT_COURSES GET http://127.0.0.1:5001/student/4/my_courses
+SHOW_TUTOR_COURSES GET http://127.0.0.1:5001/tutor/5/my_courses
+
+REQUEST POST http://127.0.0.1:5001/student/4/request/1
+APPROVE_REQUEST PUT http://127.0.0.1:5001/tutor/5/request/11 {"status" : "approved"}
+
+
+email_tutor_1@gmail.com
+email_student_1@gmail.com

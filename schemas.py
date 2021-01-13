@@ -1,8 +1,5 @@
 from marshmallow import Schema, fields, post_load, validate
 from models import Student, Tutor, Course, RequestStatus, Request
-from flask_marshmallow import Marshmallow
-from marshmallow_enum import EnumField
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 
 
 class StudentSchema(Schema):
